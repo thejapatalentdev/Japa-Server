@@ -57,6 +57,18 @@ const validate_signin = [
   check("password").notEmpty().isString().withMessage("Password cant be empty"),
 ];
 
+const validate_otp = [
+  check("email").notEmpty().isEmail().withMessage("Email must be valid email"),
+  check("otp").notEmpty().isString().withMessage("Password cant be empty"),
+];
+
+const validate_mail = [
+  check("email").notEmpty().isEmail().withMessage("Email must be valid email"),
+];
+const validate_pass = [
+  check("new_pass").notEmpty().isString().withMessage("Password cant be empty"),
+];
+
 // Middleware to handle validation results
 const handle_validation_errors = (
   req: Request,
@@ -70,4 +82,11 @@ const handle_validation_errors = (
   next();
 };
 
-export { validate_user_details, validate_signin, handle_validation_errors };
+export {
+  validate_user_details,
+  validate_mail,
+  validate_signin,
+  validate_otp,
+  validate_pass,
+  handle_validation_errors,
+};

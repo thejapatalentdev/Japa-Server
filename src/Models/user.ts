@@ -37,6 +37,12 @@ const user_details_schema = new Schema({
   ],
 });
 
-const Users = model("Users", user_details_schema);
+const otp_schema = new Schema({
+  email: { type: String },
+  otp: { type: String },
+});
 
-export { Users };
+const Users = model("Users", user_details_schema);
+const Otp = model("Otps", otp_schema);
+
+export { Users, Otp };
