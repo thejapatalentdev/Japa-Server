@@ -69,3 +69,36 @@ export const admin_check = async (
     });
   }
 };
+
+export const check_reset_auth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const auth_user_token: any = req.header("Authorization");
+  try {
+    if (auth_user_token) {
+      const user_token = auth_user_token.split(" ")[1];
+      const analyse_token: any = jwt.verify(user_token, key);
+      const my_id = analyse_token["email"];
+      const exp = analyse_token["exp"];
+      if (Date.now() >= exp * 1000) {
+        return res.status(401).json({
+          message: "Token expired",
+        });
+      } else {
+        res.locals.email = my_id;
+        req.params.email = my_id;
+        return next();
+      }
+    } else {
+      return res.status(401).json({
+        message: "invalid auth",
+      });
+    }
+  } catch (ex) {
+    return res.status(400).json({
+      message: ex,
+    });
+  }
+};
