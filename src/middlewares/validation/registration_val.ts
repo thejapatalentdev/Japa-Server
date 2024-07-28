@@ -52,6 +52,11 @@ const validate_user_details = [
     .withMessage("must be a valid object"),
 ];
 
+const validate_signin = [
+  check("email").notEmpty().isEmail().withMessage("Email must be valid email"),
+  check("password").notEmpty().isString().withMessage("Password cant be empty"),
+];
+
 // Middleware to handle validation results
 const handle_validation_errors = (
   req: Request,
@@ -65,4 +70,4 @@ const handle_validation_errors = (
   next();
 };
 
-export { validate_user_details, handle_validation_errors };
+export { validate_user_details, validate_signin, handle_validation_errors };
