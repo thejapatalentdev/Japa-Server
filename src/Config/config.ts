@@ -5,7 +5,11 @@ const config = {
   conn: process.env.CONN,
   port: process.env.PORT,
   salt: process.env.SALT,
-  //   mail: "",
+  mail: process.env.EMAIL,
+  pass: process.env.PASS,
+  smpt: process.env.SMTP,
+  mail_port: process.env.MAILPORT,
+
   //   pass: "",
   //   infobip_key: process.env.INFOBIP_KEY,
   //   info_bip_host: process.env.INFO_BIP_HOST,

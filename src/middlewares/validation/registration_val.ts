@@ -69,6 +69,27 @@ const validate_pass = [
   check("new_pass").notEmpty().isString().withMessage("Password cant be empty"),
 ];
 
+const validate_admin = [
+  check("first_name")
+    .notEmpty()
+    .isString()
+    .withMessage("First name can't be empty"),
+  check("phone_number")
+    .notEmpty()
+    .isString()
+    .withMessage("Number can't be empty"),
+  check("gender").notEmpty().isString().withMessage("Gender can't be empty"),
+  check("last_name")
+    .notEmpty()
+    .isString()
+    .withMessage("Last name can't be empty"),
+  check("pass_word")
+    .notEmpty()
+    .isString()
+    .withMessage("password can't be empty"),
+  check("email").notEmpty().isEmail().withMessage("email can't be empty"),
+];
+
 // Middleware to handle validation results
 const handle_validation_errors = (
   req: Request,
@@ -88,5 +109,6 @@ export {
   validate_signin,
   validate_otp,
   validate_pass,
+  validate_admin,
   handle_validation_errors,
 };

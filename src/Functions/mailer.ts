@@ -1,14 +1,14 @@
 import config from "../Config/config";
 import * as nodemailer from "nodemailer";
 const MAIL_SETTINGS = {
-  //   host: "wghservers.com",
+  host: config.smpt,
   secure: true,
-  // host: "server343.web-hosting.com",
+  // host: config.smpt,
   port: 465,
-  // secure: true,
+
   auth: {
-    // user: `${config.mail}`,
-    // pass: `${config.pass}`,
+    user: `${config.mail}`,
+    pass: `${config.pass}`,
   },
 };
 
@@ -20,3 +20,18 @@ transporter.verify((error, sucess) => {
     console.log("ready for message");
   }
 });
+
+export const welcome_email = async (email: any) => {
+  try {
+    let process_email = await transporter.sendMail({
+      from: config.mail,
+      to: email,
+      subject: "welcome to japa",
+      replyTo: "",
+      html: `<p>How are you today</p>`,
+    });
+    return process_email;
+  } catch (error) {
+    console.log("something is wrong", error);
+  }
+};
