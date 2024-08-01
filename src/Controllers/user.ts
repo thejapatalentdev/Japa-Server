@@ -36,3 +36,7 @@ export const login_user = async_runner(async (req: Request, res: Response) => {
     message: "Invalid details",
   });
 });
+
+export const search_for_jobs = async_runner(
+  async (req: Request, res: Response) => {}
+);

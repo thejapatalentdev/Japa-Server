@@ -113,7 +113,7 @@ const validate_jobs = [
     .withMessage("technology can't be empty"),
   check("salary_range")
     .optional()
-    .isNumeric()
+    .isString()
     .withMessage("salary has to be a valid number"),
   check("experience")
     .optional()
@@ -137,11 +137,18 @@ const validate_jobs = [
     .optional()
     .isString()
     .withMessage("ideal_candidate has to be string"),
-  check("applicants")
+
+  check("link").notEmpty().isString().withMessage("link has to be string"),
+];
+export const validate_search = [
+  check("title").optional().isString().withMessage("must be string"),
+  check("salary").optional().isNumeric().withMessage("salary must be number"),
+  check("type").optional().isString().withMessage("job must be string"),
+  check("location")
     .optional()
     .isString()
-    .withMessage("applicants has to be string"),
-  check("link").notEmpty().isString().withMessage("link has to be string"),
+    .withMessage("location must be string"),
+  check("limit").optional().isNumeric().withMessage("Must be number"),
 ];
 
 // Middleware to handle validation results
@@ -164,5 +171,6 @@ export {
   validate_otp,
   validate_pass,
   validate_admin,
+  validate_jobs,
   handle_validation_errors,
 };

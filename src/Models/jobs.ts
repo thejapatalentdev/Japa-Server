@@ -14,8 +14,10 @@ const job_schema = new Schema({
   nice_to_have: { type: String },
   skills: { type: String },
   ideal_candidate: { type: String },
-  Applicants: { type: Number },
+  applicants: { type: Number },
   link: { type: String },
+  payment_type: { type: String },
+  currency: { type: String },
 });
 
 const Jobs = model("Jobs", job_schema);
