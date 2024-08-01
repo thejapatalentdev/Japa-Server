@@ -6,8 +6,10 @@ import { generateDigitOTP, hash_pass } from "../Functions/crypt";
 import { generateRandomParagraph } from "../Functions/randomtext";
 import jwt from "jsonwebtoken";
 import config from "../Config/config";
+// import { welcome_email } from "../Functions/mailer";
 
 import bcrypt from "bcrypt";
+import { Admin } from "../Models/admin";
 const key = config.key;
 
 const delete_existing_otp = async (email: string) =>
@@ -56,8 +58,9 @@ export const register_user = async_runner(
       registration_date: Date.now(),
     });
     const save_details = await new_user.save();
+    // await welcome_email(email);
     return res.json({
-      message: save_details ? "Accounted created" : "Please check your network",
+      message: save_details ? "Account created" : "Please check your network",
     });
   }
 );
@@ -125,6 +128,48 @@ export const set_new_pass = async_runner(
       message: update_user_pass
         ? "Password updated"
         : "please retry after some mins",
+    });
+  }
+);
+
+//Register admin.........
+export const create_admin = async_runner(
+  async (req: Request, res: Response) => {
+    const {
+      first_name,
+      last_name,
+      pass_word,
+      email,
+      gender,
+      phone_number,
+      profile_image_url,
+      rights,
+    } = matchedData(req);
+    const existing_user = await Admin.findOne({
+      $or: [{ email }, { phone_number: phone_number }],
+    });
+    if (existing_user) {
+      return res.json({
+        message: "Email and Phone number already taken",
+      });
+    }
+    const encrypted = await hash_pass(pass_word);
+    const new_user = new Admin({
+      first_name,
+      last_name,
+      pass_word: encrypted,
+      email,
+      gender,
+      phone_number,
+      profile_image_url,
+      rights: "super_admin",
+
+      registration_date: Date.now(),
+    });
+    const save_details = await new_user.save();
+    // await welcome_email(email);
+    return res.json({
+      message: save_details ? "Account created" : "Please check your network",
     });
   }
 );

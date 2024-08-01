@@ -69,6 +69,88 @@ const validate_pass = [
   check("new_pass").notEmpty().isString().withMessage("Password cant be empty"),
 ];
 
+const validate_admin = [
+  check("first_name")
+    .notEmpty()
+    .isString()
+    .withMessage("First name can't be empty"),
+  check("phone_number")
+    .notEmpty()
+    .isString()
+    .withMessage("Number can't be empty"),
+  check("gender").notEmpty().isString().withMessage("Gender can't be empty"),
+  check("last_name")
+    .notEmpty()
+    .isString()
+    .withMessage("Last name can't be empty"),
+  check("pass_word")
+    .notEmpty()
+    .isString()
+    .withMessage("password can't be empty"),
+  check("email").notEmpty().isEmail().withMessage("email can't be empty"),
+];
+
+const validate_jobs = [
+  check("job_title")
+    .notEmpty()
+    .isString()
+    .withMessage("Job title can't be empty"),
+  check("location")
+    .notEmpty()
+    .isString()
+    .withMessage("Location title can't be empty"),
+  check("job_type")
+    .notEmpty()
+    .isString()
+    .withMessage("Job type can't be empty"),
+  check("company_name")
+    .notEmpty()
+    .isString()
+    .withMessage("company name can't be empty"),
+  check("technology")
+    .notEmpty()
+    .isArray()
+    .withMessage("technology can't be empty"),
+  check("salary_range")
+    .optional()
+    .isString()
+    .withMessage("salary has to be a valid number"),
+  check("experience")
+    .optional()
+    .isString()
+    .withMessage("experience has to be string"),
+  check("about").optional().isString().withMessage("about has to be string"),
+  check(" what_you_will_be_doing")
+    .optional()
+    .isString()
+    .withMessage(" what_you_will_be_doing has to be string"),
+  check("what_we_are_lookin_for")
+    .optional()
+    .isString()
+    .withMessage("what_we_are_lookin_for has to be string"),
+  check("nice_to_have")
+    .optional()
+    .isString()
+    .withMessage("nice_to_have has to be string"),
+  check("skills").optional().isString().withMessage(" skills has to be string"),
+  check("ideal_candidate")
+    .optional()
+    .isString()
+    .withMessage("ideal_candidate has to be string"),
+
+  check("link").notEmpty().isString().withMessage("link has to be string"),
+];
+export const validate_search = [
+  check("title").optional().isString().withMessage("must be string"),
+  check("salary").optional().isNumeric().withMessage("salary must be number"),
+  check("type").optional().isString().withMessage("job must be string"),
+  check("location")
+    .optional()
+    .isString()
+    .withMessage("location must be string"),
+  check("limit").optional().isNumeric().withMessage("Must be number"),
+];
+
 // Middleware to handle validation results
 const handle_validation_errors = (
   req: Request,
@@ -88,5 +170,7 @@ export {
   validate_signin,
   validate_otp,
   validate_pass,
+  validate_admin,
+  validate_jobs,
   handle_validation_errors,
 };

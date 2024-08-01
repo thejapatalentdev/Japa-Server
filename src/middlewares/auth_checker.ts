@@ -46,7 +46,7 @@ export const admin_check = async (
     if (auth_admin_token) {
       const user_token = auth_admin_token.split(" ")[1];
       const analyse_token: any = jwt.verify(user_token, key);
-      const my_id = analyse_token["role"];
+      const my_id = analyse_token["right"];
       const exp = analyse_token["exp"];
       if (Date.now() >= exp * 1000) {
         return res.status(401).json({
