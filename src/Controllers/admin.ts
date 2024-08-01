@@ -12,6 +12,7 @@ const key = config.key;
 export const login_admin = async_runner(async (req: Request, res: Response) => {
   const { email, password } = matchedData(req);
   const get_user = await Admin.findOne({ email: email });
+  
   if (get_user) {
     const pass = get_user.pass_word;
     const compare_pass = await bcrypt.compare(password, pass);

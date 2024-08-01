@@ -90,6 +90,60 @@ const validate_admin = [
   check("email").notEmpty().isEmail().withMessage("email can't be empty"),
 ];
 
+const validate_jobs = [
+  check("job_title")
+    .notEmpty()
+    .isString()
+    .withMessage("Job title can't be empty"),
+  check("location")
+    .notEmpty()
+    .isString()
+    .withMessage("Location title can't be empty"),
+  check("job_type")
+    .notEmpty()
+    .isString()
+    .withMessage("Job type can't be empty"),
+  check("company_name")
+    .notEmpty()
+    .isString()
+    .withMessage("company name can't be empty"),
+  check("technology")
+    .notEmpty()
+    .isArray()
+    .withMessage("technology can't be empty"),
+  check("salary_range")
+    .optional()
+    .isNumeric()
+    .withMessage("salary has to be a valid number"),
+  check("experience")
+    .optional()
+    .isString()
+    .withMessage("experience has to be string"),
+  check("about").optional().isString().withMessage("about has to be string"),
+  check(" what_you_will_be_doing")
+    .optional()
+    .isString()
+    .withMessage(" what_you_will_be_doing has to be string"),
+  check("what_we_are_lookin_for")
+    .optional()
+    .isString()
+    .withMessage("what_we_are_lookin_for has to be string"),
+  check("nice_to_have")
+    .optional()
+    .isString()
+    .withMessage("nice_to_have has to be string"),
+  check("skills").optional().isString().withMessage(" skills has to be string"),
+  check("ideal_candidate")
+    .optional()
+    .isString()
+    .withMessage("ideal_candidate has to be string"),
+  check("applicants")
+    .optional()
+    .isString()
+    .withMessage("applicants has to be string"),
+  check("link").notEmpty().isString().withMessage("link has to be string"),
+];
+
 // Middleware to handle validation results
 const handle_validation_errors = (
   req: Request,
