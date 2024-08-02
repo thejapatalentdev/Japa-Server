@@ -132,7 +132,10 @@ const validate_jobs = [
     .optional()
     .isString()
     .withMessage("nice_to_have has to be string"),
-  check("skills").optional().isString().withMessage(" skills has to be string"),
+  check("catrgory")
+    .optional()
+    .isArray()
+    .withMessage(" skills has to be string"),
   check("ideal_candidate")
     .optional()
     .isString()
@@ -149,6 +152,7 @@ export const validate_search = [
     .isString()
     .withMessage("location must be string"),
   check("limit").optional().isNumeric().withMessage("Must be number"),
+  check("technology").optional().isArray().withMessage("Must be number"),
 ];
 
 // Middleware to handle validation results
