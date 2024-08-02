@@ -6,7 +6,7 @@ import { matchedData, param } from "express-validator";
 import { generateRandomParagraph } from "../Functions/randomtext";
 import { Admin } from "../Models/admin";
 import bcrypt from "bcrypt";
-import { Jobs } from "../Models/jobs";
+import { Job_category, Job_type, Jobs } from "../Models/jobs";
 
 const key = config.key;
 export const login_admin = async_runner(async (req: Request, res: Response) => {
@@ -88,34 +88,40 @@ export const post_jobs = async_runner(async (req: Request, res: Response) => {
   });
 });
 
-//find jobs
-export const find_jobs = async_runner(async (req: Request, res: Response) => {
-  const {
-    title,
-    salary,
-    type,
-    location,
-    page = 1,
-    limit = 10,
-  } = matchedData(req);
-  const filter: any = {};
-  if (title) filter.job_title = { $regex: title, $options: "i" };
-  if (salary) filter.salary_range = { $regex: salary, $options: "i" };
-  if (type) filter.job_type = { $regex: type, $options: "i" };
-  if (location) filter.location = { $regex: location, $options: "i" };
-
-  const skip = (page - 1) * limit;
-  const jobs = await Jobs.find(filter).skip(skip).limit(Number(limit)).exec();
-  const count = await Jobs.countDocuments(filter);
-  if (jobs.length > 0) {
+export const post_job_category = async_runner(
+  async (req: Request, res: Response) => {
+    const { name } = req.body;
+    const role = req.params.role;
+    if (role === "admin" || role === "super_admin") {
+      const save_category = new Job_category({
+        name,
+      });
+      const save_now = await save_category.save();
+      return res.json({
+        message: save_now ? "saved" : "not saved",
+      });
+    }
     return res.json({
-      message: "Jobs",
-      jobs,
-      total_pages: Math.ceil(count / limit),
-      current_page: Number(page),
+      message: "you dont have right",
     });
   }
-  res.json({
-    message: [],
-  });
-});
+);
+
+export const post_job_type = async_runner(
+  async (req: Request, res: Response) => {
+    const { name } = req.body;
+    const role = req.params.role;
+    if (role === "admin" || role === "super_admin") {
+      const save_type = new Job_type({
+        name,
+      });
+      const save_now = await save_type.save();
+      return res.json({
+        message: save_now ? "saved" : "not saved",
+      });
+    }
+    return res.json({
+      message: "You dont have right",
+    });
+  }
+);
