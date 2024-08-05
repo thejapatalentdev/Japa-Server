@@ -26,7 +26,7 @@ const validate_user_details = [
   check("bio").optional().isString().withMessage("Bio must be a string"),
   check("email").isEmail().notEmpty().withMessage("Invalid email format"),
   check("phone_number")
-    .notEmpty()
+    .optional()
     .isNumeric()
     .withMessage("must be a valid number"),
   check("gender").optional().isString().withMessage("must be string"),
