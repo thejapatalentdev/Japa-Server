@@ -167,7 +167,6 @@ const handle_validation_errors = (
   }
   next();
 };
-
 export {
   validate_user_details,
   validate_mail,

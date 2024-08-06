@@ -96,3 +96,19 @@ export const list_category = async_runner(
     }
   }
 );
+
+export const find_job_by_id = async_runner(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const job = await Jobs.findById({ _id: id });
+    if (job) {
+      return res.json({
+        message: "job",
+        data: job,
+      });
+    }
+    return res.json({
+      message: "invalid id",
+    });
+  }
+);
