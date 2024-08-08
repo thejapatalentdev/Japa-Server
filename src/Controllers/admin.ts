@@ -7,6 +7,7 @@ import { generateRandomParagraph } from "../Functions/randomtext";
 import { Admin } from "../Models/admin";
 import bcrypt from "bcrypt";
 import { Job_category, Job_type, Jobs } from "../Models/jobs";
+import { Courses } from "../Models/courses";
 
 const key = config.key;
 export const login_admin = async_runner(async (req: Request, res: Response) => {
@@ -122,6 +123,32 @@ export const post_job_type = async_runner(
     }
     return res.json({
       message: "You dont have right",
+    });
+  }
+);
+
+export const post_courses = async_runner(
+  async (req: Request, res: Response) => {
+    const role = req.params.role;
+    if (role === "admin" || role === "super_admin") {
+      const { title, about, course_outline, over_view, link, requirements } =
+        matchedData(req);
+      const save_couses = new Courses({
+        title,
+        about,
+        link,
+        course_outline,
+        over_view,
+        requirements,
+        date_posted: Date.now(),
+      });
+      const saved_course = await save_couses.save();
+      return res.json({
+        message: saved_course ? "course saved" : "please retry",
+      });
+    }
+    return res.json({
+      message: "you have no rights",
     });
   }
 );

@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import { generateRandomParagraph } from "../Functions/randomtext";
 import config from "../Config/config";
 import { Job_category, Job_type, Jobs } from "../Models/jobs";
+import { Courses } from "../Models/courses";
 const key = config.key;
 
 //Login is as a user
@@ -56,7 +57,6 @@ export const find_jobs = async_runner(async (req: Request, res: Response) => {
   if (location) filter.location = { $regex: location, $options: "i" };
   if (technology)
     filter.technology = { $in: (technology as string).split(",") };
-
   const skip = (page - 1) * limit;
   const jobs = await Jobs.find(filter).skip(skip).limit(Number(limit)).exec();
   const count = await Jobs.countDocuments(filter);
@@ -109,6 +109,48 @@ export const find_job_by_id = async_runner(
     }
     return res.json({
       message: "invalid id",
+    });
+  }
+);
+
+export const find_courses_by_id = async_runner(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const course = await Courses.findById({ _id: id });
+    if (course) {
+      return res.json({
+        message: "Course",
+        data: course,
+      });
+    }
+    return res.json({
+      message: "invalid id",
+    });
+  }
+);
+
+//find courses......
+export const find_courses = async_runner(
+  async (req: Request, res: Response) => {
+    const { title, page = 1, limit = 10 } = matchedData(req);
+    const filter: any = {};
+    if (title) filter.title = { $regex: title, $options: "i" };
+    const skip = (page - 1) * limit;
+    const courses = await Courses.find(filter)
+      .skip(skip)
+      .limit(Number(limit))
+      .exec();
+    const count = await Courses.countDocuments(filter);
+    if (courses.length > 0) {
+      return res.json({
+        message: "Courses",
+        courses: courses,
+        total_pages: Math.ceil(count / limit),
+        current_page: Number(page),
+      });
+    }
+    res.json({
+      message: [],
     });
   }
 );
