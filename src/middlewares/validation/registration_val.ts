@@ -166,10 +166,6 @@ export const validate_courses = [
     .optional()
     .isString()
     .withMessage("outline must be string"),
-  check("course_outline")
-    .optional()
-    .isString()
-    .withMessage("outline must be string"),
   check("requirements")
     .optional()
     .isString()
