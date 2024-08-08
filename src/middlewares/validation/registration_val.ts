@@ -155,6 +155,28 @@ export const validate_search = [
   check("technology").optional().isArray().withMessage("Must be number"),
 ];
 
+export const validate_courses = [
+  check("title").notEmpty().isString().withMessage("title must be string"),
+  check("about").notEmpty().isObject().withMessage("about must be object"),
+  check("over_view")
+    .optional()
+    .isObject()
+    .withMessage("overview must be object"),
+  check("course_outline")
+    .optional()
+    .isString()
+    .withMessage("outline must be string"),
+  check("course_outline")
+    .optional()
+    .isString()
+    .withMessage("outline must be string"),
+  check("requirements")
+    .optional()
+    .isString()
+    .withMessage("requirememnts must be string"),
+  check("link").notEmpty().isString().withMessage("Must be a valid string"),
+];
+
 // Middleware to handle validation results
 const handle_validation_errors = (
   req: Request,

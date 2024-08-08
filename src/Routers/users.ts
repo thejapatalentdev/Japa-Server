@@ -4,6 +4,8 @@ import {
   validate_search,
 } from "../middlewares/validation/registration_val";
 import {
+  find_courses,
+  find_courses_by_id,
   find_job_by_id,
   list_category,
   list_jobtype,
@@ -21,6 +23,8 @@ export default (router: express.Router) => {
   );
   router.get("/user/jobs", validate_search, find_jobs);
   router.get("/user/jobyid/:id", find_job_by_id);
+  router.get("/user/coursebyid/:id", find_courses_by_id);
   router.get("/user/jobcategory", list_category);
   router.get("/user/jobtypes", list_jobtype);
+  router.get("/user/getcourses", find_courses);
 };
