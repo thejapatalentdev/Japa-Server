@@ -132,9 +132,9 @@ const validate_jobs = [
     .optional()
     .isString()
     .withMessage("nice_to_have has to be string"),
-  check("catrgory")
+  check("category")
     .optional()
-    .isArray()
+    .isString()
     .withMessage(" skills has to be string"),
   check("ideal_candidate")
     .optional()
