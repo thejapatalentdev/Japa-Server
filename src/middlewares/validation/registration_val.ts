@@ -1,4 +1,4 @@
-import { check, validationResult } from "express-validator";
+import { check, validationResult, param, query } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 
 // Validation chain for user details
@@ -144,15 +144,15 @@ const validate_jobs = [
   check("link").notEmpty().isString().withMessage("link has to be string"),
 ];
 export const validate_search = [
-  check("title").optional().isString().withMessage("must be string"),
-  check("salary").optional().isNumeric().withMessage("salary must be number"),
-  check("type").optional().isString().withMessage("job must be string"),
-  check("location")
+  query("title").optional().isString().withMessage("must be string"),
+  query("salary").optional().isNumeric().withMessage("salary must be number"),
+  query("type").optional().isString().withMessage("job must be string"),
+  query("location")
     .optional()
     .isString()
     .withMessage("location must be string"),
-  check("limit").optional().isNumeric().withMessage("Must be number"),
-  check("technology").optional().isArray().withMessage("Must be number"),
+  query("limit").optional().isNumeric().withMessage("Must be number"),
+  query("technology").optional().isString().withMessage("Must be number"),
 ];
 
 export const validate_courses = [
