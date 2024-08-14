@@ -47,11 +47,15 @@ export const find_jobs = async_runner(async (req: Request, res: Response) => {
     type,
     location,
     technology,
+    category,
+    experience,
     page = 1,
     limit = 10,
-  } = matchedData(req);
+  } = matchedData(req, { locations: ["query"] });
   const filter: any = {};
   if (title) filter.job_title = { $regex: title, $options: "i" };
+  if (experience) filter.job_title = { $regex: experience, $options: "i" };
+  if (category) filter.job_title = { $regex: category, $options: "i" };
   if (salary) filter.salary_range = { $regex: salary, $options: "i" };
   if (type) filter.job_type = { $regex: type, $options: "i" };
   if (location) filter.location = { $regex: location, $options: "i" };
@@ -76,6 +80,7 @@ export const find_jobs = async_runner(async (req: Request, res: Response) => {
 export const list_jobtype = async_runner(
   async (req: Request, res: Response) => {
     const job_types = await Job_type.find();
+    // const remote_jobs
     if (job_types.length > 0) {
       return res.json({
         message: "Job types",

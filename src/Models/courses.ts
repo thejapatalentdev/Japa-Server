@@ -7,7 +7,7 @@ const courses_schema = new Schema({
     level: String,
     schedule: String,
   },
-  course_outline: { tyep: String },
+  course_outline: { type: String },
   date_posted: { type: Date },
   over_view: {
     whocan: String,
