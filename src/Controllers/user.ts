@@ -62,7 +62,11 @@ export const find_jobs = async_runner(async (req: Request, res: Response) => {
   if (technology)
     filter.technology = { $in: (technology as string).split(",") };
   const skip = (page - 1) * limit;
-  const jobs = await Jobs.find(filter).skip(skip).limit(Number(limit)).exec();
+  const jobs = await Jobs.find(filter)
+    .skip(skip)
+    .limit(Number(limit))
+    .lean()
+    .exec();
   const count = await Jobs.countDocuments(filter);
   if (jobs.length > 0) {
     return res.json({
@@ -73,7 +77,8 @@ export const find_jobs = async_runner(async (req: Request, res: Response) => {
     });
   }
   res.json({
-    message: [],
+    message: "no data",
+    data: [],
   });
 });
 
@@ -105,7 +110,7 @@ export const list_category = async_runner(
 export const find_job_by_id = async_runner(
   async (req: Request, res: Response) => {
     const id = req.params.id;
-    const job = await Jobs.findById({ _id: id });
+    const job = await Jobs.findById({ _id: id }).lean();
     if (job) {
       return res.json({
         message: "job",
