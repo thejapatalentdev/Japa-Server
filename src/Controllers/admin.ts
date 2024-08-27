@@ -171,7 +171,7 @@ export const stats = async_runner(async (req: Request, res: Response) => {
 });
 
 export const users_list = async_runner(async (req: Request, res: Response) => {
-  const users = await Users.find();
+  const users = await Users.find().lean();
   if (users.length > 0) {
     return res.json({
       message: "Users",
