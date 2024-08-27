@@ -169,12 +169,33 @@ export const stats = async_runner(async (req: Request, res: Response) => {
   });
 });
 
-export const users_list = async_runner(async (req: Request, res: Response) => {
-  const users = await Users.find().lean();
+export const user_list = async_runner(async (req: Request, res: Response) => {
+  const {
+    name,
+    email,
+    page = 1,
+    limit = 10,
+  } = matchedData(req, { locations: ["query"] });
+  const filter: any = {};
+  if (name) filter.job_title = { $regex: name, $options: "i" };
+  if (email) filter.job_title = { $regex: email, $options: "i" };
+  const skip = (page - 1) * limit;
+  const users = await Users.find(filter)
+    .skip(skip)
+    .limit(Number(limit))
+    .lean()
+    .exec();
+  const count = await Jobs.countDocuments(filter);
   if (users.length > 0) {
     return res.json({
-      message: "Users",
-      data: users,
+      message: "Jobs",
+      users,
+      total_pages: Math.ceil(count / limit),
+      current_page: Number(page),
     });
   }
+  res.json({
+    message: "no data",
+    jobs: [],
+  });
 });

@@ -3,6 +3,7 @@ import {
   handle_validation_errors,
   validate_jobs,
   validate_courses,
+  validate_user_search,
 } from "../middlewares/validation/registration_val";
 import {
   login_admin,
@@ -11,7 +12,7 @@ import {
   post_jobs,
   post_courses,
   stats,
-  users_list,
+  user_list,
 } from "../Controllers/admin";
 import express from "express";
 import { admin_check } from "../middlewares/auth_checker";
@@ -35,5 +36,5 @@ export default (router: express.Router) => {
   router.post("/admin/postcourse", admin_check, validate_courses, post_courses);
   router.get("/admin/stats", stats);
   // add admin verification
-  router.get("/admin/users", users_list);
+  router.get("/admin/users", validate_user_search, user_list);
 };
