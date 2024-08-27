@@ -157,11 +157,13 @@ export const post_courses = async_runner(
 
 export const stats = async_runner(async (req: Request, res: Response) => {
   const number_of_users = await Users.countDocuments();
+  const number_of_jobs = await Jobs.countDocuments();
 
   if (number_of_users) {
     return res.json({
       message: "Data",
       data: number_of_users,
+      jobs: number_of_jobs,
     });
   }
   return res.json({
