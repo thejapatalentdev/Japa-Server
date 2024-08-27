@@ -95,6 +95,7 @@ const validate_jobs = [
     .notEmpty()
     .isString()
     .withMessage("Job title can't be empty"),
+  check("skills").notEmpty().isString().withMessage("Skills can't be empty"),
   check("location")
     .notEmpty()
     .isString()
@@ -140,7 +141,6 @@ const validate_jobs = [
     .optional()
     .isString()
     .withMessage("ideal_candidate has to be string"),
-
   check("link").notEmpty().isString().withMessage("link has to be string"),
 ];
 export const validate_search = [
