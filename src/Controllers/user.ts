@@ -59,6 +59,7 @@ export const find_jobs = async_runner(async (req: Request, res: Response) => {
   if (salary) filter.salary_range = { $regex: salary, $options: "i" };
   if (type) filter.job_type = { $regex: type, $options: "i" };
   if (location) filter.location = { $regex: location, $options: "i" };
+
   if (technology)
     filter.technology = { $in: (technology as string).split(",") };
   const skip = (page - 1) * limit;

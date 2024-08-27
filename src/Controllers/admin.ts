@@ -8,6 +8,7 @@ import { Admin } from "../Models/admin";
 import bcrypt from "bcrypt";
 import { Job_category, Job_type, Jobs } from "../Models/jobs";
 import { Courses } from "../Models/courses";
+import { Users } from "../Models/user";
 
 const key = config.key;
 export const login_admin = async_runner(async (req: Request, res: Response) => {
@@ -154,3 +155,27 @@ export const post_courses = async_runner(
     });
   }
 );
+
+export const stats = async_runner(async (req: Request, res: Response) => {
+  const number_of_users = await Users.countDocuments();
+
+  if (number_of_users) {
+    return res.json({
+      message: "Data",
+      data: number_of_users,
+    });
+  }
+  return res.json({
+    message: "No data",
+  });
+});
+
+export const users_list = async_runner(async (req: Request, res: Response) => {
+  const users = await Users.find();
+  if (users.length > 0) {
+    return res.json({
+      message: "Users",
+      data: users,
+    });
+  }
+});
