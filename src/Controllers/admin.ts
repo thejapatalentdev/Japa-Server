@@ -52,7 +52,6 @@ export const post_jobs = async_runner(async (req: Request, res: Response) => {
       technology,
       salary_range,
       experience,
-      date_posted,
       about,
       what_you_will_be_doing,
       what_we_are_lookin_for,
