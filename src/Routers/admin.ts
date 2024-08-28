@@ -39,5 +39,5 @@ export default (router: express.Router) => {
   // add admin verification to both APIS
   router.get("/admin/stats", stats);
   router.get("/admin/users", validate_user_search, user_list);
-  router.get("/admin/users", validate_course_search, course_list);
+  router.get("/admin/courses", validate_course_search, course_list);
 };
