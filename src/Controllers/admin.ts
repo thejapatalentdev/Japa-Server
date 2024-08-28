@@ -213,16 +213,16 @@ export const course_list = async_runner(async (req: Request, res: Response) => {
   const filter: any = {};
   if (title) filter.job_title = { $regex: title, $options: "i" };
   const skip = (page - 1) * limit;
-  const users = await Courses.find(filter)
+  const courses = await Courses.find(filter)
     .skip(skip)
     .limit(Number(limit))
     .lean()
     .exec();
   const count = await Courses.countDocuments(filter);
-  if (users.length > 0) {
+  if (courses.length > 0) {
     return res.json({
       message: "Courses",
-      users,
+      courses,
       total_pages: Math.ceil(count / limit),
       current_page: Number(page),
     });
