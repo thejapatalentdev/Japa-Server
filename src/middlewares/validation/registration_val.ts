@@ -160,6 +160,11 @@ export const validate_user_search = [
   query("limit").optional().isNumeric().withMessage("Must be number"),
   query("page").optional().isNumeric().withMessage("Must be number"),
 ];
+export const validate_course_search = [
+  query("title").optional().isString().withMessage("title must be string"),
+  query("limit").optional().isNumeric().withMessage("Must be number"),
+  query("page").optional().isNumeric().withMessage("Must be number"),
+];
 
 export const validate_courses = [
   check("title").notEmpty().isString().withMessage("title must be string"),

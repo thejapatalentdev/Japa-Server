@@ -158,12 +158,14 @@ export const post_courses = async_runner(
 export const stats = async_runner(async (req: Request, res: Response) => {
   const number_of_users = await Users.countDocuments();
   const number_of_jobs = await Jobs.countDocuments();
+  const number_of_courses = await Courses.countDocuments();
 
-  if (number_of_users) {
+  if (number_of_users > 0) {
     return res.json({
       message: "Data",
       data: number_of_users,
       jobs: number_of_jobs,
+      courses: number_of_courses,
     });
   }
   return res.json({
@@ -190,7 +192,36 @@ export const user_list = async_runner(async (req: Request, res: Response) => {
   const count = await Jobs.countDocuments(filter);
   if (users.length > 0) {
     return res.json({
-      message: "Jobs",
+      message: "Users",
+      users,
+      total_pages: Math.ceil(count / limit),
+      current_page: Number(page),
+    });
+  }
+  res.json({
+    message: "no data",
+    jobs: [],
+  });
+});
+
+export const course_list = async_runner(async (req: Request, res: Response) => {
+  const {
+    title,
+    page = 1,
+    limit = 10,
+  } = matchedData(req, { locations: ["query"] });
+  const filter: any = {};
+  if (title) filter.job_title = { $regex: title, $options: "i" };
+  const skip = (page - 1) * limit;
+  const users = await Courses.find(filter)
+    .skip(skip)
+    .limit(Number(limit))
+    .lean()
+    .exec();
+  const count = await Courses.countDocuments(filter);
+  if (users.length > 0) {
+    return res.json({
+      message: "Courses",
       users,
       total_pages: Math.ceil(count / limit),
       current_page: Number(page),
