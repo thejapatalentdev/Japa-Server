@@ -15,6 +15,7 @@ import {
   stats,
   user_list,
   course_list,
+  delete_course,
 } from "../Controllers/admin";
 import express from "express";
 import { admin_check } from "../middlewares/auth_checker";
@@ -36,6 +37,7 @@ export default (router: express.Router) => {
   router.post("/admin/postjobcategory", admin_check, post_job_category);
   router.post("/admin/postjobtype", admin_check, post_job_type);
   router.post("/admin/postcourse", admin_check, validate_courses, post_courses);
+  router.post("/admin/deletecourse", admin_check, delete_course);
   // add admin verification to both APIS
   router.get("/admin/stats", stats);
   router.get("/admin/users", validate_user_search, user_list);
