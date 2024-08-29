@@ -5,6 +5,7 @@ import {
   validate_courses,
   validate_user_search,
   validate_course_search,
+  validate_search,
 } from "../middlewares/validation/registration_val";
 import {
   login_admin,
@@ -16,6 +17,7 @@ import {
   user_list,
   course_list,
   delete_course,
+  jobs_list,
 } from "../Controllers/admin";
 import express from "express";
 import { admin_check } from "../middlewares/auth_checker";
@@ -41,5 +43,6 @@ export default (router: express.Router) => {
   // add admin verification to both APIS
   router.get("/admin/stats", stats);
   router.get("/admin/users", validate_user_search, user_list);
+  router.get("/admin/jobs", validate_search, jobs_list);
   router.get("/admin/courses", validate_course_search, course_list);
 };
