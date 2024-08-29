@@ -155,6 +155,16 @@ export const post_courses = async_runner(
   }
 );
 
+export const delete_course = async_runner(
+  async (req: Request, res: Response) => {
+    const { _id } = req.body;
+    const delete_one = await Courses.deleteOne({ _id });
+    return res.json({
+      message: delete_one ? "Deleted" : "please retry",
+    });
+  }
+);
+
 export const stats = async_runner(async (req: Request, res: Response) => {
   const number_of_users = await Users.countDocuments();
   const number_of_jobs = await Jobs.countDocuments();
@@ -181,19 +191,49 @@ export const user_list = async_runner(async (req: Request, res: Response) => {
     limit = 10,
   } = matchedData(req, { locations: ["query"] });
   const filter: any = {};
-  if (name) filter.job_title = { $regex: name, $options: "i" };
-  if (email) filter.job_title = { $regex: email, $options: "i" };
+  if (name) filter.user_name = { $regex: name, $options: "i" };
+  if (email) filter.user_email = { $regex: email, $options: "i" };
   const skip = (page - 1) * limit;
   const users = await Users.find(filter)
     .skip(skip)
     .limit(Number(limit))
     .lean()
     .exec();
-  const count = await Jobs.countDocuments(filter);
+  const count = await Users.countDocuments(filter);
   if (users.length > 0) {
     return res.json({
       message: "Users",
       users,
+      total_pages: Math.ceil(count / limit),
+      current_page: Number(page),
+    });
+  }
+  res.json({
+    message: "no data",
+    users: [],
+  });
+});
+
+export const jobs_list = async_runner(async (req: Request, res: Response) => {
+  const {
+    title,
+    page = 1,
+    limit = 10,
+  } = matchedData(req, { locations: ["query"] });
+  const filter: any = {};
+  if (title) filter.job_title = { $regex: title, $options: "i" };
+  // if (email) filter.job_title = { $regex: email, $options: "i" };
+  const skip = (page - 1) * limit;
+  const jobs = await Jobs.find(filter)
+    .skip(skip)
+    .limit(Number(limit))
+    .lean()
+    .exec();
+  const count = await Jobs.countDocuments(filter);
+  if (jobs.length > 0) {
+    return res.json({
+      message: "Jobs",
+      jobs,
       total_pages: Math.ceil(count / limit),
       current_page: Number(page),
     });
@@ -229,6 +269,6 @@ export const course_list = async_runner(async (req: Request, res: Response) => {
   }
   res.json({
     message: "no data",
-    jobs: [],
+    courses: [],
   });
 });

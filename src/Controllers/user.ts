@@ -79,7 +79,7 @@ export const find_jobs = async_runner(async (req: Request, res: Response) => {
   }
   res.json({
     message: "no data",
-    data: [],
+    jobs: [],
   });
 });
 
