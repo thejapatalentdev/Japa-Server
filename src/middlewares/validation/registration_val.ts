@@ -95,6 +95,68 @@ const validate_jobs = [
     .notEmpty()
     .isString()
     .withMessage("Job title can't be empty"),
+  check("min_salary")
+    .optional()
+    .isNumeric()
+    .withMessage("salary can't be empty"),
+  check("max_salary")
+    .optional()
+    .isNumeric()
+    .withMessage("salary can't be empty"),
+  check("skills").notEmpty().isString().withMessage("Skills can't be empty"),
+  check("location")
+    .notEmpty()
+    .isString()
+    .withMessage("Location title can't be empty"),
+  check("job_type")
+    .notEmpty()
+    .isString()
+    .withMessage("Job type can't be empty"),
+  check("company_name")
+    .notEmpty()
+    .isString()
+    .withMessage("company name can't be empty"),
+  check("technology")
+    .notEmpty()
+    .isArray()
+    .withMessage("technology can't be empty"),
+  check("salary_range")
+    .optional()
+    .isString()
+    .withMessage("salary has to be a valid number"),
+  check("experience")
+    .optional()
+    .isString()
+    .withMessage("experience has to be string"),
+  check("about").optional().isString().withMessage("about has to be string"),
+  check(" what_you_will_be_doing")
+    .optional()
+    .isString()
+    .withMessage(" what_you_will_be_doing has to be string"),
+  check("what_we_are_lookin_for")
+    .optional()
+    .isString()
+    .withMessage("what_we_are_lookin_for has to be string"),
+  check("nice_to_have")
+    .optional()
+    .isString()
+    .withMessage("nice_to_have has to be string"),
+  check("category")
+    .optional()
+    .isString()
+    .withMessage(" skills has to be string"),
+  check("ideal_candidate")
+    .optional()
+    .isString()
+    .withMessage("ideal_candidate has to be string"),
+  check("link").notEmpty().isString().withMessage("link has to be string"),
+];
+export const validate_jobs_edit = [
+  check("job_id").notEmpty().isString(),
+  check("job_title")
+    .notEmpty()
+    .isString()
+    .withMessage("Job title can't be empty"),
   check("skills").notEmpty().isString().withMessage("Skills can't be empty"),
   check("location")
     .notEmpty()
@@ -169,6 +231,25 @@ export const validate_course_search = [
 export const validate_courses = [
   check("title").notEmpty().isString().withMessage("title must be string"),
   check("about").notEmpty().isObject().withMessage("about must be object"),
+  check("over_view")
+    .optional()
+    .isObject()
+    .withMessage("overview must be object"),
+  check("course_outline")
+    .optional()
+    .isString()
+    .withMessage("outline must be string"),
+  check("requirements")
+    .optional()
+    .isString()
+    .withMessage("requirememnts must be string"),
+  check("link").notEmpty().isString().withMessage("Must be a valid string"),
+];
+
+export const validate_courses_edit = [
+  check("course_id").notEmpty().isString().withMessage("title must be string"),
+  check("title").optional().isString().withMessage("title must be string"),
+  check("about").optional().isObject().withMessage("about must be object"),
   check("over_view")
     .optional()
     .isObject()
