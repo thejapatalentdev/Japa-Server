@@ -23,6 +23,8 @@ import {
   edit_jobs,
   talent_list,
   delete_jobs,
+  list_job_type,
+  list_job_cats,
 } from "../Controllers/admin";
 import express from "express";
 import { admin_check } from "../middlewares/auth_checker";
@@ -65,4 +67,6 @@ export default (router: express.Router) => {
   router.get("/admin/jobs", validate_search, jobs_list);
   router.get("/admin/courses", validate_course_search, course_list);
   router.get("/admin/talents", admin_check, validate_search, talent_list);
+  router.get("/admin/jobcats", admin_check, list_job_cats);
+  router.get("/admin/jobtype", admin_check, list_job_type);
 };
