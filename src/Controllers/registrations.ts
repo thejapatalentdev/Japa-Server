@@ -7,7 +7,6 @@ import { generateRandomParagraph } from "../Functions/randomtext";
 import jwt from "jsonwebtoken";
 import config from "../Config/config";
 // import { welcome_email } from "../Functions/mailer";
-
 import bcrypt from "bcrypt";
 import { Admin } from "../Models/admin";
 const key = config.key;

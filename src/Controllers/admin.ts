@@ -8,7 +8,7 @@ import { Admin } from "../Models/admin";
 import bcrypt from "bcrypt";
 import { Job_category, Job_type, Jobs } from "../Models/jobs";
 import { Courses } from "../Models/courses";
-import { Users } from "../Models/user";
+import { Talents, Users } from "../Models/user";
 
 const key = config.key;
 export const login_admin = async_runner(async (req: Request, res: Response) => {
@@ -38,6 +38,36 @@ export const login_admin = async_runner(async (req: Request, res: Response) => {
   }
   return res.json({
     message: "Invalid details",
+  });
+});
+
+export const talent_list = async_runner(async (req: Request, res: Response) => {
+  const {
+    name,
+    page = 1,
+    limit = 10,
+  } = matchedData(req, { locations: ["query"] });
+  const filter: any = {};
+  if (name) filter.full_name = { $regex: name, $options: "i" };
+  // if (email) filter.user_email = { $regex: email, $options: "i" };
+  const skip = (page - 1) * limit;
+  const talents = await Talents.find(filter)
+    .skip(skip)
+    .limit(Number(limit))
+    .lean()
+    .exec();
+  const count = await Users.countDocuments(filter);
+  if (talents.length > 0) {
+    return res.json({
+      message: "Users",
+      talents,
+      total_pages: Math.ceil(count / limit),
+      current_page: Number(page),
+    });
+  }
+  res.json({
+    message: "no data",
+    talents: [],
   });
 });
 
@@ -88,6 +118,69 @@ export const post_jobs = async_runner(async (req: Request, res: Response) => {
   }
   return res.json({
     message: "you have no rights",
+  });
+});
+
+export const edit_jobs = async_runner(async (req: Request, res: Response) => {
+  const role = req.params.role;
+  if (role === "admin" || role === "super_admin") {
+    const {
+      job_title,
+      location,
+      job_type,
+      company_name,
+      technology,
+      salary_range,
+      experience,
+      about,
+      what_you_will_be_doing,
+      what_we_are_lookin_for,
+      nice_to_have,
+      skills,
+      category,
+      ideal_candidate,
+      applicants,
+      link,
+      job_id,
+    } = matchedData(req);
+    const update_job = await Jobs.findByIdAndUpdate(
+      job_id,
+      {
+        job_title,
+        location,
+        job_type,
+        company_name,
+        technology,
+        salary_range,
+        experience,
+        category,
+        about,
+        what_you_will_be_doing,
+        what_we_are_lookin_for,
+        nice_to_have,
+        skills,
+        ideal_candidate,
+        applicants,
+        link,
+        date_posted: Date.now(),
+      },
+      { new: true }
+    );
+    const saved_job = await update_job.save();
+    return res.json({
+      message: saved_job ? "job saved" : "please retry",
+    });
+  }
+  return res.json({
+    message: "you have no rights",
+  });
+});
+
+export const delete_jobs = async_runner(async (req: Request, res: Response) => {
+  const { _id } = req.body;
+  const delete_one = await Jobs.deleteOne({ _id });
+  return res.json({
+    message: delete_one ? "Deleted" : "please retry",
   });
 });
 
@@ -147,6 +240,43 @@ export const post_courses = async_runner(
       const saved_course = await save_couses.save();
       return res.json({
         message: saved_course ? "course saved" : "please retry",
+      });
+    }
+    return res.json({
+      message: "you have no rights",
+    });
+  }
+);
+
+export const edit_courses = async_runner(
+  async (req: Request, res: Response) => {
+    const role = req.params.role;
+    if (role === "admin" || role === "super_admin") {
+      const {
+        title,
+        about,
+        course_outline,
+        over_view,
+        link,
+        requirements,
+        course_id,
+      } = matchedData(req);
+      const update_course = await Courses.findByIdAndUpdate(
+        course_id,
+        {
+          title,
+          about,
+          link,
+          course_outline,
+          over_view,
+          requirements,
+          date_posted: Date.now(),
+        },
+        { new: true }
+      );
+
+      return res.json({
+        message: update_course ? "course saved" : "please retry",
       });
     }
     return res.json({

@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { async_runner } from "../middlewares/async_runner";
 import { matchedData } from "express-validator";
-import { Users } from "../Models/user";
+import { Applications, Talents, Users } from "../Models/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { generateRandomParagraph } from "../Functions/randomtext";
 import config from "../Config/config";
 import { Job_category, Job_type, Jobs } from "../Models/jobs";
 import { Courses } from "../Models/courses";
+import mongoose from "mongoose";
 const key = config.key;
 
 //Login is as a user
@@ -54,8 +55,8 @@ export const find_jobs = async_runner(async (req: Request, res: Response) => {
   } = matchedData(req, { locations: ["query"] });
   const filter: any = {};
   if (title) filter.job_title = { $regex: title, $options: "i" };
-  if (experience) filter.job_title = { $regex: experience, $options: "i" };
-  if (category) filter.job_title = { $regex: category, $options: "i" };
+  if (experience) filter.experience = { $regex: experience, $options: "i" };
+  if (category) filter.jcategory = { $regex: category, $options: "i" };
   if (salary) filter.salary_range = { $regex: salary, $options: "i" };
   if (type) filter.job_type = { $regex: type, $options: "i" };
   if (location) filter.location = { $regex: location, $options: "i" };
@@ -162,6 +163,64 @@ export const find_courses = async_runner(
     }
     res.json({
       message: [],
+    });
+  }
+);
+
+export const apply_for_jobs = async_runner(
+  async (req: Request, res: Response) => {
+    const { user_id, job_id } = req.body;
+    const applied = await Applications.findOne({ user_id }).lean();
+    if (applied) {
+      return res.json({
+        message: "you already applied for this job o!",
+      });
+    }
+    const apply_now = new Applications({
+      job_id,
+      user_id,
+    });
+    const saved = await apply_now.save();
+    return res.json({
+      message: saved ? "Thanks for applying" : "Please retry",
+    });
+  }
+);
+
+export const apply_for_coaching = async_runner(
+  async (req: Request, res: Response) => {
+    const { full_name, current_skills, course_of_choice, resume_link } =
+      req.body;
+    const apply_now = new Talents({
+      full_name,
+      current_skills,
+      course_of_choice,
+      resume_link,
+    });
+    const saved = await apply_now.save();
+    return res.json({
+      message: saved ? "Thanks for applying" : "Please retry",
+    });
+  }
+);
+
+export const job_applied_for = async_runner(
+  async (req: Request, res: Response) => {
+    const { user_id } = req.query;
+    //@ts-ignore
+    const _id = new mongoose.Types.ObjectId(user_id);
+    const applied_for = await Applications.find({ user_id: _id })
+      .populate("job_id")
+      .lean();
+    if (applied_for) {
+      return res.json({
+        message: "Jobs applied for",
+        jobs: applied_for,
+      });
+    }
+    return res.json({
+      message: "No applications found",
+      jobs: [],
     });
   }
 );

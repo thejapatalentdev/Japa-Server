@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 const user_details_schema = new Schema({
   first_name: { type: String },
   last_name: { type: String },
@@ -42,7 +42,22 @@ const otp_schema = new Schema({
   otp: { type: String },
 });
 
+const talents = new Schema({
+  full_name: { type: String },
+  current_skills: { type: String },
+  course_of_choice: { type: String },
+  resume_link: { type: String },
+  date: { type: Date },
+});
+
+const apply_for_jobs = new Schema({
+  user_id: { type: Types.ObjectId, ref: "Users" },
+  job_id: { type: Types.ObjectId, ref: "Jobs" },
+});
+
 const Users = model("Users", user_details_schema);
 const Otp = model("Otps", otp_schema);
+const Talents = model("Talents", talents);
+const Applications = model("Applications", apply_for_jobs);
 
-export { Users, Otp };
+export { Users, Otp, Talents, Applications };

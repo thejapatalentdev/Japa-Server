@@ -5,6 +5,8 @@ const job_schema = new Schema({
   job_type: { type: String },
   company_name: { type: String },
   technology: [],
+  min_salary: { type: Number },
+  max_salary: { type: Number },
   salary_range: { ammount: Number, currency: String },
   experience: { type: String },
   date_posted: { type: Date },
