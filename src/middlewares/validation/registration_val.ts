@@ -129,7 +129,7 @@ const validate_jobs = [
     .isString()
     .withMessage("experience has to be string"),
   check("about").optional().isString().withMessage("about has to be string"),
-  check(" what_you_will_be_doing")
+  check("what_you_will_be_doing")
     .optional()
     .isString()
     .withMessage(" what_you_will_be_doing has to be string"),
