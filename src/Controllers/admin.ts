@@ -222,6 +222,30 @@ export const post_job_type = async_runner(
   }
 );
 
+export const list_job_cats = async_runner(
+  async (req: Request, res: Response) => {
+    const job_cats = await Job_category.find().lean();
+    if (job_cats.length > 0) {
+      return res.json({
+        message: "JOb categories",
+        categories: job_cats,
+      });
+    }
+  }
+);
+
+export const list_job_type = async_runner(
+  async (req: Request, res: Response) => {
+    const job_type = await Job_type.find().lean();
+    if (job_type.length > 0) {
+      return res.json({
+        message: "JOb categories",
+        type: job_type,
+      });
+    }
+  }
+);
+
 export const post_courses = async_runner(
   async (req: Request, res: Response) => {
     const role = req.params.role;

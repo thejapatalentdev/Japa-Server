@@ -209,7 +209,7 @@ export const job_applied_for = async_runner(
     const { user_id } = req.query;
     //@ts-ignore
     const _id = new mongoose.Types.ObjectId(user_id);
-    const applied_for = await Applications.find({ user_id: _id })
+    const applied_for = await Applications.find({ user_id: user_id })
       .populate("job_id")
       .lean();
     if (applied_for) {
