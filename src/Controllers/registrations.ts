@@ -31,9 +31,7 @@ export const register_user = async_runner(
       job_status,
       additional_certification,
     } = matchedData(req);
-    const existing_user = await Users.findOne({
-      $or: [{ email }],
-    });
+    const existing_user = await Users.findOne({ email });
     if (existing_user) {
       return res.json({
         message: "Email already taken",
