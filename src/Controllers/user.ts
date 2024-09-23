@@ -178,20 +178,49 @@ export const find_courses = async_runner(
 export const apply_for_jobs = async_runner(
   async (req: Request, res: Response) => {
     const { user_id, job_id } = req.body;
-    const applied = await Applications.findOne({ user_id }).lean();
+    const jobs = await Applications.findOne({ user_id })
+      .lean()
+      .countDocuments();
+    const applied = await Applications.findOne({
+      user_id,
+      job_id: { $in: [job_id] },
+    }).lean();
     if (applied) {
+      return res.json({ message: "already applied" });
+    }
+    if (jobs > 0) {
+      const applications = await Applications.findOneAndUpdate(
+        { user_id },
+        { $push: { job_id } },
+        { upsert: true }
+      );
       return res.json({
-        message: "you already applied for this job o!",
+        message: applications ? "saved" : "retry",
+      });
+    } else {
+      const applications = new Applications({
+        user_id,
+        job_id,
+      });
+      const saver = await applications.save();
+      return res.json({
+        message: saver ? "saved" : "retry",
       });
     }
-    const apply_now = new Applications({
-      job_id,
-      user_id,
-    });
-    const saved = await apply_now.save();
-    return res.json({
-      message: saved ? "Thanks for applying" : "Please retry",
-    });
+
+    // if (applied) {
+    //   return res.json({
+    //     message: "you already applied for this job o!",
+    //   });
+    // }
+    // const apply_now = new Applications({
+    //   job_id,
+    //   user_id,
+    // });
+    // const saved = await apply_now.save();
+    // return res.json({
+    //   message: saved ? "Thanks for applying" : "Please retry",
+    // });
   }
 );
 
