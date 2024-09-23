@@ -192,7 +192,7 @@ export const apply_for_jobs = async_runner(
       const applications = await Applications.findOneAndUpdate(
         { user_id },
         { $push: { job_id } },
-        { upsert: true }
+        { new: true }
       );
       return res.json({
         message: applications ? "saved" : "retry",
@@ -246,9 +246,15 @@ export const job_applied_for = async_runner(
     const { user_id } = req.query;
     //@ts-ignore
     const _id = new mongoose.Types.ObjectId(user_id);
+    // const applications = await Applications.find({
+    //   user_id: user_id,
+    // }).populate("job_id");
+
     const applied_for = await Applications.find({ user_id: user_id })
       .populate("job_id")
       .lean();
+    //@ts-ignore
+
     if (applied_for) {
       return res.json({
         message: "Jobs applied for",
