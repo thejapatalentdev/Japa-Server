@@ -29,9 +29,17 @@ const job_type_schema = new Schema({
 const job_category_schema = new Schema({
   name: { type: String },
 });
+const Technologies_used = new Schema({
+  name: { type: String },
+});
+const yoe = new Schema({
+  name: { type: String },
+});
 
 const Jobs = model("Jobs", job_schema);
-const Job_type = model("Tob_type", job_type_schema);
+const Job_type = model("Job_type", job_type_schema);
 const Job_category = model("Job_category", job_category_schema);
+const Technologies = model("Job_technologies", Technologies_used);
+const Years_of_experience = model("years_of_experience", yoe);
 
-export { Jobs, Job_category, Job_type };
+export { Jobs, Job_category, Job_type, Technologies, Years_of_experience };

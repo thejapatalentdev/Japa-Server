@@ -94,6 +94,10 @@ export const list_jobtype = async_runner(
         data: job_types,
       });
     }
+    return res.json({
+      message: "No job types",
+      job_types: [],
+    });
   }
 );
 
@@ -106,6 +110,10 @@ export const list_category = async_runner(
         data: job_categories,
       });
     }
+    return res.json({
+      message: "No categories",
+      job_categories: [],
+    });
   }
 );
 
@@ -203,7 +211,7 @@ export const apply_for_coaching = async_runner(
     });
   }
 );
-
+//This line get the jobs
 export const job_applied_for = async_runner(
   async (req: Request, res: Response) => {
     const { user_id } = req.query;

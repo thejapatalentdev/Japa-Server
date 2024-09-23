@@ -17,6 +17,7 @@ import {
 import express from "express";
 import { find_jobs } from "../Controllers/user";
 import { user_check } from "../middlewares/auth_checker";
+import { list_technologies, list_yoe } from "../Controllers/admin";
 
 export default (router: express.Router) => {
   router.post(
@@ -34,4 +35,6 @@ export default (router: express.Router) => {
   router.get("/user/jobtypes", list_jobtype);
   router.get("/user/getcourses", find_courses);
   router.get("/user/applications", job_applied_for);
+  router.get("/user/technologies", list_technologies);
+  router.get("/user/yoe", list_yoe);
 };

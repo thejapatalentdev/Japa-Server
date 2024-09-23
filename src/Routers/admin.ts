@@ -25,6 +25,8 @@ import {
   delete_jobs,
   list_job_type,
   list_job_cats,
+  post_technology,
+  post_years_of_experience,
 } from "../Controllers/admin";
 import express from "express";
 import { admin_check } from "../middlewares/auth_checker";
@@ -53,6 +55,8 @@ export default (router: express.Router) => {
   router.delete("/admin/deletejobs", admin_check, delete_jobs);
   router.post("/admin/postjobcategory", admin_check, post_job_category);
   router.post("/admin/postjobtype", admin_check, post_job_type);
+  router.post("/admin/posttechnology", admin_check, post_technology);
+  router.post("/admin/postyoe", admin_check, post_years_of_experience);
   router.post("/admin/postcourse", admin_check, validate_courses, post_courses);
   router.put(
     "/admin/editcourse",
