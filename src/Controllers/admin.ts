@@ -6,7 +6,13 @@ import { matchedData, param } from "express-validator";
 import { generateRandomParagraph } from "../Functions/randomtext";
 import { Admin } from "../Models/admin";
 import bcrypt from "bcrypt";
-import { Job_category, Job_type, Jobs } from "../Models/jobs";
+import {
+  Job_category,
+  Job_type,
+  Jobs,
+  Technologies,
+  Years_of_experience,
+} from "../Models/jobs";
 import { Courses } from "../Models/courses";
 import { Talents, Users } from "../Models/user";
 
@@ -222,15 +228,57 @@ export const post_job_type = async_runner(
   }
 );
 
+export const post_technology = async_runner(
+  async (req: Request, res: Response) => {
+    const { name } = req.body;
+    const role = req.params.role;
+    if (role === "admin" || role === "super_admin") {
+      const save_type = new Technologies({
+        name,
+      });
+      const save_now = await save_type.save();
+      return res.json({
+        message: save_now ? "saved" : "not saved",
+      });
+    }
+    return res.json({
+      message: "You dont have right",
+    });
+  }
+);
+
+export const post_years_of_experience = async_runner(
+  async (req: Request, res: Response) => {
+    const { name } = req.body;
+    const role = req.params.role;
+    if (role === "admin" || role === "super_admin") {
+      const save_type = new Years_of_experience({
+        name,
+      });
+      const save_now = await save_type.save();
+      return res.json({
+        message: save_now ? "saved" : "not saved",
+      });
+    }
+    return res.json({
+      message: "You dont have right",
+    });
+  }
+);
+
 export const list_job_cats = async_runner(
   async (req: Request, res: Response) => {
     const job_cats = await Job_category.find().lean();
     if (job_cats.length > 0) {
       return res.json({
-        message: "JOb categories",
+        message: "Job categories",
         categories: job_cats,
       });
     }
+    return res.json({
+      message: "No categories",
+      categories: [],
+    });
   }
 );
 
@@ -239,12 +287,40 @@ export const list_job_type = async_runner(
     const job_type = await Job_type.find().lean();
     if (job_type.length > 0) {
       return res.json({
-        message: "JOb categories",
+        message: "Job types",
         type: job_type,
       });
     }
+    return res.json({
+      message: "No categories",
+      type: [],
+    });
   }
 );
+export const list_technologies = async_runner(
+  async (req: Request, res: Response) => {
+    const technologies = await Technologies.find().lean();
+    if (technologies.length > 0) {
+      return res.json({
+        message: "Technologies",
+        tech: technologies,
+      });
+    }
+    return res.json({
+      message: "No categories",
+      tech: [],
+    });
+  }
+);
+export const list_yoe = async_runner(async (req: Request, res: Response) => {
+  const years_of_experience = await Years_of_experience.find().lean();
+  if (years_of_experience.length > 0) {
+    return res.json({
+      message: "Years of experience",
+      type: years_of_experience,
+    });
+  }
+});
 
 export const post_courses = async_runner(
   async (req: Request, res: Response) => {
