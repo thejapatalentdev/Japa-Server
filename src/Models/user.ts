@@ -52,7 +52,7 @@ const talents = new Schema({
 
 const apply_for_jobs = new Schema({
   user_id: { type: Types.ObjectId, ref: "Users" },
-  job_id: { type: Types.ObjectId, ref: "Jobs" },
+  job_id: [{ type: Types.ObjectId, ref: "Jobs", required: true }],
 });
 
 const Users = model("Users", user_details_schema);
