@@ -6,7 +6,7 @@ import { generateDigitOTP, hash_pass } from "../Functions/crypt";
 import { generateRandomParagraph } from "../Functions/randomtext";
 import jwt from "jsonwebtoken";
 import config from "../Config/config";
-// import { welcome_email } from "../Functions/mailer";
+import { welcome_email } from "../Functions/mailer";
 import bcrypt from "bcrypt";
 import { Admin } from "../Models/admin";
 const key = config.key;
@@ -55,7 +55,7 @@ export const register_user = async_runner(
       registration_date: Date.now(),
     });
     const save_details = await new_user.save();
-    // await welcome_email(email);
+    await welcome_email(email, first_name);
     return res.json({
       message: save_details ? "Account created" : "Please check your network",
     });
