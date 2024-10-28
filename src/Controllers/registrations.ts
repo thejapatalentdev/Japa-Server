@@ -6,7 +6,7 @@ import { generateDigitOTP, hash_pass } from "../Functions/crypt";
 import { generateRandomParagraph } from "../Functions/randomtext";
 import jwt from "jsonwebtoken";
 import config from "../Config/config";
-import { welcome_email } from "../Functions/mailer";
+import { reset_otp, welcome_email } from "../Functions/mailer";
 import bcrypt from "bcrypt";
 import { Admin } from "../Models/admin";
 const key = config.key;
@@ -75,10 +75,9 @@ export const create_otp_for_password_reset = async_runner(
       });
       const save_code = await set_otp.save();
       //Add otp email here...
+      await reset_otp(email, code);
       return res.json({
-        message: save_code
-          ? `Please check your mail for OTP ${code}`
-          : "please retry",
+        message: save_code ? `Please check your mail for OTP` : "please retry",
       });
     }
     return res.json({
@@ -160,7 +159,6 @@ export const create_admin = async_runner(
       phone_number,
       profile_image_url,
       rights: "super_admin",
-
       registration_date: Date.now(),
     });
     const save_details = await new_user.save();
