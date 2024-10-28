@@ -9,6 +9,8 @@ const config = {
   pass: process.env.PASS,
   smpt: process.env.SMTP,
   mail_port: process.env.MAILPORT,
+  user_id: process.env.API_USER_ID,
+  api_secret: process.env.API_SECRET,
 
   //   pass: "",
   //   infobip_key: process.env.INFOBIP_KEY,
