@@ -70,7 +70,7 @@ export const welcome_email = async (email: String, name: String) => {
    <p>
      If you have any questions or need support, our dedicated team is here to
      help. Simply reply to this email or reach out to us at
-     <a href="mailto:support@japatalent.com">support@japatalent.com</a>.   </p>
+     <a href="mailto:support@japatalent.com">hello@japatalent.com</a>.   </p>
 
    <p>Thank you for choosing JapaTalent! We're excited to be part of your journey.</p>
 
@@ -90,12 +90,7 @@ export const welcome_email = async (email: String, name: String) => {
           email,
         },
       ],
-      // bcc: [
-      //   {
-      //     name: "Your BCC Name",
-      //     email: "your-bcc-email@example.com",
-      //   },
-      // ],
+    
     };
     //@ts-ignore
     sendpulse.smtpSendMail((data) => console.log(data), mailData);
@@ -107,7 +102,7 @@ export const welcome_email = async (email: String, name: String) => {
 export const reset_otp = async (email: String, code: String) => {
   try {
     await sendpulse.init(config.user_id, config.api_secret, TOKEN_STORAGE);
-    // console.log(config.user_id, config.api_secret);
+  
 
     const mailData = {
       html: `

@@ -14,7 +14,9 @@ import {
   Years_of_experience,
 } from "../Models/jobs";
 import { Courses } from "../Models/courses";
-import { Talents, Users } from "../Models/user";
+import { Talents, Users, Otp } from "../Models/user";
+import { generateDigitOTP } from "../Functions/crypt";
+import { reset_otp } from "../Functions/mailer";
 
 const key = config.key;
 export const login_admin = async_runner(async (req: Request, res: Response) => {
@@ -297,6 +299,7 @@ export const list_job_type = async_runner(
     });
   }
 );
+
 export const list_technologies = async_runner(
   async (req: Request, res: Response) => {
     const technologies = await Technologies.find().lean();
@@ -312,6 +315,7 @@ export const list_technologies = async_runner(
     });
   }
 );
+
 export const list_yoe = async_runner(async (req: Request, res: Response) => {
   const years_of_experience = await Years_of_experience.find().lean();
   if (years_of_experience.length > 0) {
@@ -502,3 +506,71 @@ export const course_list = async_runner(async (req: Request, res: Response) => {
     courses: [],
   });
 });
+const delete_existing_otp = async (email: string) =>
+  Otp.findOneAndDelete({ email });
+
+export const create_otp_for_password_reset = async_runner(
+  async (req: Request, res: Response) => {
+    const { email } = matchedData(req);
+    delete_existing_otp(email);
+    const check_account = await Users.findOne({ email: email });
+    if (check_account) {
+      const code = generateDigitOTP(6);
+      const set_otp = new Otp({
+        otp: code,
+        email: email,
+      });
+      const save_code = await set_otp.save();
+      //Add otp email here...
+      await reset_otp(email, code);
+      return res.json({
+        message: save_code ? `Please check your mail for OTP` : "please retry",
+      });
+    }
+    return res.json({
+      message: "invalid details",
+    });
+  }
+);
+
+export const verify_otp = async_runner(async (req: Request, res: Response) => {
+  const { otp, email } = matchedData(req);
+  const confirm_check = await Otp.findOne({ otp });
+  if (confirm_check && confirm_check.email === email) {
+    const combined = generateRandomParagraph();
+    const reset_token = jwt.sign(
+      {
+        email,
+        text: combined,
+        otp,
+      },
+      key,
+      { expiresIn: "10days" }
+    );
+    return res.json({
+      message: `reset_token ${reset_token}`,
+    });
+  }
+  return res.json({
+    message: "invalid details",
+  });
+});
+
+export const set_new_pass = async_runner(
+  async (req: Request, res: Response) => {
+    const { new_pass } = matchedData(req);
+    const email = req.params.email;
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(new_pass, salt);
+    const update_user_pass = await Users.updateOne(
+      { email: email },
+      { $set: { pass_word: hashed } },
+      { new: true }
+    );
+    return res.json({
+      message: update_user_pass
+        ? "Password updated"
+        : "please retry after some mins",
+    });
+  }
+);
