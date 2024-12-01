@@ -70,7 +70,7 @@ export const welcome_email = async (email: String, name: String) => {
    <p>
      If you have any questions or need support, our dedicated team is here to
      help. Simply reply to this email or reach out to us at
-     <a href="mailto:support@japatalent.com">support@japatalent.com</a>.   </p>
+     <a href="mailto:support@japatalent.com">hello@japatalent.com</a>.   </p>
 
    <p>Thank you for choosing JapaTalent! We're excited to be part of your journey.</p>
 
@@ -81,7 +81,48 @@ export const welcome_email = async (email: String, name: String) => {
       // text: `Welcome, ${name}!`,
       subject: "A warm welcome to JapaTalent!",
       from: {
-        name: "japa",
+        name: "japa Talent",
+        email: "hello@japatalent.com",
+      },
+      to: [
+        {
+          name,
+          email,
+        },
+      ],
+    
+    };
+    //@ts-ignore
+    sendpulse.smtpSendMail((data) => console.log(data), mailData);
+  } catch (error) {
+    console.error("Error sending welcome email:", error);
+  }
+};
+
+export const reset_otp = async (email: String, code: String) => {
+  try {
+    await sendpulse.init(config.user_id, config.api_secret, TOKEN_STORAGE);
+  
+
+    const mailData = {
+      html: `
+   <p>Hi ${name},</p>
+
+   <p>Someone just tried to reset your password.</p>
+
+   <p>
+   if that was you please use ${code}
+   </p>
+
+   <p>
+   If it was not you, kindly report to the admin
+   </p>
+
+`,
+      // text: `Welcome, ${name}!`,
+      subject: "Password Reset",
+      from: {
+        name: "japa Talent",
         email: "hello@japatalent.com",
       },
       to: [
