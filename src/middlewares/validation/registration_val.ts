@@ -95,19 +95,12 @@ const validate_jobs = [
     .notEmpty()
     .isString()
     .withMessage("Job title can't be empty"),
-  check("min_salary")
-    .optional()
-    .isNumeric()
-    .withMessage("salary can't be empty"),
-  check("max_salary")
-    .optional()
-    .isNumeric()
-    .withMessage("salary can't be empty"),
-  check("skills").notEmpty().isString().withMessage("Skills can't be empty"),
-  check("location")
-    .notEmpty()
-    .isString()
-    .withMessage("Location title can't be empty"),
+  check("min_salary").optional().isNumeric(),
+
+  check("max_salary").optional().isNumeric(),
+
+  check("skills").isString(),
+  check("location").isString(),
   check("job_type")
     .notEmpty()
     .isString()
@@ -116,18 +109,9 @@ const validate_jobs = [
     .notEmpty()
     .isString()
     .withMessage("company name can't be empty"),
-  check("technology")
-    .notEmpty()
-    .isArray()
-    .withMessage("technology can't be empty"),
-  check("salary_range")
-    .optional()
-    .isString()
-    .withMessage("salary has to be a valid number"),
-  check("experience")
-    .optional()
-    .isString()
-    .withMessage("experience has to be string"),
+  check("technology").isArray(),
+  check("salary_range").optional().isString(),
+  check("experience").optional().isString(),
   check("about").optional().isString().withMessage("about has to be string"),
   check("what_you_will_be_doing")
     .optional()
