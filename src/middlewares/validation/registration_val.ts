@@ -95,9 +95,9 @@ const validate_jobs = [
     .notEmpty()
     .isString()
     .withMessage("Job title can't be empty"),
-  check("min_salary").optional().isNumeric(),
+  check("min_salary").isNumeric(),
 
-  check("max_salary").optional().isNumeric(),
+  check("max_salary").isNumeric(),
 
   check("skills").isString(),
   check("location").isString(),
