@@ -53,7 +53,7 @@ export const talent_list = async_runner(async (req: Request, res: Response) => {
   const {
     name,
     page = 1,
-    limit = 10,
+    limit = 100,
   } = matchedData(req, { locations: ["query"] });
   const filter: any = {};
   if (name) filter.full_name = { $regex: name, $options: "i" };
@@ -422,7 +422,7 @@ export const user_list = async_runner(async (req: Request, res: Response) => {
     name,
     email,
     page = 1,
-    limit = 10,
+    limit = 100,
   } = matchedData(req, { locations: ["query"] });
   const filter: any = {};
   if (name) filter.user_name = { $regex: name, $options: "i" };
@@ -452,7 +452,7 @@ export const jobs_list = async_runner(async (req: Request, res: Response) => {
   const {
     title,
     page = 1,
-    limit = 10,
+    limit = 100,
   } = matchedData(req, { locations: ["query"] });
   const filter: any = {};
   if (title) filter.job_title = { $regex: title, $options: "i" };
@@ -482,7 +482,7 @@ export const course_list = async_runner(async (req: Request, res: Response) => {
   const {
     title,
     page = 1,
-    limit = 10,
+    limit = 100,
   } = matchedData(req, { locations: ["query"] });
   const filter: any = {};
   if (title) filter.job_title = { $regex: title, $options: "i" };
