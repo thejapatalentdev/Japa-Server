@@ -51,7 +51,7 @@ export const find_jobs = async_runner(async (req: Request, res: Response) => {
     category,
     experience,
     page = 1,
-    limit = 10,
+    limit = 1000,
   } = matchedData(req, { locations: ["query"] });
   const filter: any = {};
   if (title) filter.job_title = { $regex: title, $options: "i" };
@@ -152,7 +152,7 @@ export const find_courses_by_id = async_runner(
 //find courses......
 export const find_courses = async_runner(
   async (req: Request, res: Response) => {
-    const { title, page = 1, limit = 10 } = matchedData(req);
+    const { title, page = 1, limit = 1000 } = matchedData(req);
     const filter: any = {};
     if (title) filter.title = { $regex: title, $options: "i" };
     const skip = (page - 1) * limit;
