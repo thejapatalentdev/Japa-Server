@@ -121,10 +121,10 @@ const validate_jobs = [
     .optional()
     .isString()
     .withMessage("what_we_are_lookin_for has to be string"),
-  check("nice_to_have")
-    .optional()
-    .isString()
-    .withMessage("nice_to_have has to be string"),
+  // check("nice_to_have")
+  //   .optional()
+  //   .isString()
+  //   .withMessage("nice_to_have has to be string"),
   check("category")
     .optional()
     .isString()

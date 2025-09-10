@@ -13,7 +13,7 @@ const job_schema = new Schema({
   about: { type: String },
   what_you_will_be_doing: { type: String },
   what_we_are_lookin_for: { type: String },
-  nice_to_have: { type: String },
+  // nice_to_have: { type: String },
   category: { type: String },
   // ideal_candidate: { type: String },
   applicants: { type: Number },
