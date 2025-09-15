@@ -119,7 +119,7 @@ export const reset_otp = async (email: String, code: String) => {
    </p>
 
 `,
-      // text: `Welcome, ${name}!`,
+      // text: `Welcome, ${name}! okay.....`,
       subject: "Password Reset",
       from: {
         name: "japa Talent",
